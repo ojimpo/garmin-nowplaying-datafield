@@ -1,0 +1,27 @@
+# Connect IQ build output and local SDKs
+bin/
+build/
+.tooling/
+.local/
+*.prg
+*.prg.debug.xml
+*.iq
+*.mir
+*.debug.xml
+
+# Signing keys and credentials must never be public
+*.der
+*.pem
+*.key
+developer_key*
+.env
+.env.*
+!.env.example
+*.mobileprovision
+*.p12
+
+# Editors and OS
+.DS_Store
+Thumbs.db
+.vscode/settings.json
+*.log
