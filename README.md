@@ -1,8 +1,18 @@
 # Garmin Now Playing Data Field
 
-Garmin Edge 530 の走行データ画面に、iPhone の Spotify で再生中の曲名・アーティスト名を表示するためのプロジェクト。
+Garmin Edge 530 の走行データ画面に、iPhone で再生中の曲名・アーティスト名を表示するためのプロジェクト。Spotify と Apple Music の両方を対象にする。
 
 **開発初期段階です。まずダミーデータによる表示を実装し、iPhone からの通信は別工程で検証します。**
+
+## 続きから開発する場合
+
+最初に [引き継ぎメモ](docs/HANDOFF.md) を読むこと。現在の優先方針は **Apple Media Service（AMS）から標準の再生情報を受け取れるかの検証**。
+Spotify 専用 API や独自 iPhone アプリの開発を前提にしない。
+AMS を Edge 530 の Data Field から利用できることは、まだ確認できていない。
+
+Garmin 側の開発は Windows・macOS・Linux で行える。**続きのために Mac へ移る必要はない**。
+macOS / Xcode が必要なのは、独自 iPhone アプリをビルドする場合。
+Mac で再開する場合は [macOS セットアップ](docs/setup-macos.md) を参照。
 
 ## 現在できること
 
@@ -14,8 +24,10 @@ Garmin Edge 530 の走行データ画面に、iPhone の Spotify で再生中の
 今回の SDK 設定エディターでは設定 JSON の読み込みエラーが出ており、設定画面からの変更は未確認です。
 日本語サンプルは、シミュレーターの言語設定を Japanese にして表示確認しました。
 
-Spotify 取得・iPhone アプリ・Bluetooth 通信はまだ実装していません。
+AMS 接続・再生情報の実取得・iPhone アプリ・Bluetooth 通信はまだ実装していません。
 端末側の権限もまだ要求しません。
+
+![Edge 530 シミュレーターの日本語デモ。7 Fields A の各枠に同じ Data Field を複製している](docs/images/edge530-demo.png)
 
 ## 開発環境（Windows）
 
@@ -71,6 +83,8 @@ Monkey C のテストビルド・実行は次のとおりです。
 | `tests/` | Monkey C のテスト |
 | `docs/transport-research.md` | 通信制約と次の検証 |
 | `docs/validation.md` | 実行済みチェックと実機確認の手順 |
+| `docs/HANDOFF.md` | 方針・現在地・次の作業・別マシンへの引き継ぎ |
+| `docs/setup-macos.md` | Mac での環境準備とビルド・テスト手順 |
 
 ## 最初の目標
 
@@ -83,9 +97,9 @@ Monkey C のテストビルド・実行は次のとおりです。
 
 1. ダミー曲の2行表示と Edge 530 向けビルド。
 2. シミュレーターと実機でデータ画面の分割・寸法・日本語表示を確認。
-3. Edge 530 / API 3.3 の通信制約を検証。
-4. iPhone ロック中の曲変更通知・切断復帰を実機で評価。
-5. 検証結果に基づいて Spotify OAuth と配信経路を実装する。
+3. Edge 530 / API 3.3 の BLE 接続役割・ボンディング制約を調べ、AMS の直接受信が成立するか判断する。
+4. 接続が成立した場合、Apple Music と Spotify の両方で、iPhone ロック中の曲変更通知・切断復帰を実機で評価する。
+5. 直接受信できない場合は制約を記録し、両サービスを扱える代替構成を検討する。Spotify 専用 API への変更や追加ハードウェアの導入は、ユーザーと相談して決める。
 
 ## 設計元
 
