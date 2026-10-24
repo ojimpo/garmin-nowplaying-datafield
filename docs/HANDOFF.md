@@ -8,15 +8,17 @@ iPhone で普段どおり音楽を再生し、iPhone をロックしたまま、
 ユーザーは **Spotify と Apple Music の両方**を使う。取得経路は **Apple Media Service（AMS）による標準の再生情報**を優先して調べる。
 独自 iPhone アプリを前面に出し続ける構成や Spotify 専用 OAuth を、前提にしない。
 
-これは採用した検証方針であり、AMS の直接接続が実現済みという意味ではない。
-表示の試作を終えた段階で、通信の成立性が最大の未解決事項。
+Windows 上で AMS の成立性を調査した結果、**現行の公開 API では直接接続の実装を見送る**判断になった。
+AMS のアクセサリ接続役割を CIQ の central-only API では再現できず、Edge 530 向けには明示的な bonding API も使えない。
+システムの iPhone 接続や音楽情報を CIQ へ公開する経路も見つからなかった。実機で失敗を観測したわけではない。
+根拠・再現方法・判断を変える条件は [AMS 調査結果](ams-feasibility.md) を読む。
 
 ## Mac へ移る必要があるか
 
 | 作業 | Mac が必要か |
 | --- | --- |
 | Monkey C の編集・ビルド・テスト・シミュレーター | 不要。公式 SDK は Windows / macOS / Linux 向けに配布されている |
-| Edge 530 から AMS へ直接接続できるかの調査 | 不要。まず API と接続条件を調べる |
+| Edge 530 から AMS へ直接接続できるかの調査 | 不要。Windows で文献・API・機種指定コンパイルまで実施済み |
 | 直接接続できた場合の実機確認 | Edge 530 と iPhone が必要。Mac は必須ではない |
 | 独自 iPhone アプリのビルド・実機署名 | macOS / Xcode が必要。ただし現在の主方針ではない |
 
@@ -51,6 +53,10 @@ Windows、SDK 9.3.0、Java 17、Edge 530 シミュレーター（API 3.3.1）で
 
 以下は未確認: 実機への導入、他の項目との共存、AMS 接続、Apple Music / Spotify の実データ、ロック中の更新、切断復帰、電池消費、macOS でのビルド。
 
+AMS 調査では、通常 BLE API のコンパイル成功を対照に `requestBond()` と `getBondedDevices()` の Edge 530 非対応を確認した。
+公式デバイス定義のメタデータでも両 API と Media scope がない。再現用スクリプトと結果は [research/ams](../research/ams/README.md)。
+デバイス定義には API 3.3.1 / 3.3.6 のバリアントがある。表示を確認したシミュレーターは 3.3.1。
+
 ## 既知の開発環境の問題
 
 `bin/nowplaying-settings.json` は生成されるが、SDK の App Settings Editor は `No settings file found for this app` を表示する。
@@ -60,11 +66,10 @@ Windows、SDK 9.3.0、Java 17、Edge 530 シミュレーター（API 3.3.1）で
 
 ## 次に着手すること
 
-1. [通信調査メモ](transport-research.md) の「AMS を先に止める可能性がある制約」を確認する。まず BLE の接続役割とボンディング API を照合する。
-2. Garmin 本体が既に持つ iPhone 接続から AMS を Connect IQ に公開する経路があるか、公式 API とサンプルで調べる。既存の Garmin Connect ペアリングをそのまま使えると仮定しない。
-3. 文献と API で成立性が残る場合だけ、表示デモとは別の小さな実機用接続プローブを作る。検出・接続・サービス発見・通知登録を段階ごとに記録する。
-4. 直接経路が成立しない場合は、根拠となる制約を記録する。追加ハードウェアや Spotify 専用方式へ無断で切り替えず、両サービスを扱う代替案を相談する。
-5. 接続が成立したら Apple Music と Spotify、ロック中、アプリ切替、一時停止、Bluetooth 切断・復帰を試す。Edge 530 実機での確認をもって対応可否を決める。
+1. 調査済みの直接経路を既定で再実装しない。[再開条件](ams-feasibility.md#実施していないことと再開条件)を満たす新しい根拠があれば再評価する。
+2. 次の方針をユーザーと選ぶ。両サービスの要件を維持する候補は小型 BLE ブリッジだが、追加機器を携行する負担があり、まだ採用も検証もしていない。
+3. ブリッジを選んだ場合は、iPhone からの AMS 取得と Edge への独自 GATT 通信を別々に検証し、その後に2接続を同時維持する。機器の購入や方式変更は未承認。
+4. 通信経路が成立したら Apple Music と Spotify、ロック中、アプリ切替、一時停止、Bluetooth 切断・復帰を試す。Edge 530 実機での確認をもって対応可否を決める。
 
 シミュレーターで描けることは、実際の iPhone と接続できる証拠にならない。
 
@@ -85,4 +90,4 @@ SDK、デバイス定義、Java、Node.js は各マシンで用意する。SDK M
 
 ## 新しいチャットでの再開用メッセージ
 
-> このリポジトリの AGENTS.md と docs/HANDOFF.md を読んで続けてください。Edge 530 の曲名・アーティスト名表示デモはビルドとシミュレーター確認済みです。Spotify と Apple Music の両方に対応したいため、Apple Media Service（AMS）で iPhone 標準の再生情報を受け取る経路を優先します。独自 iPhone アプリや Spotify 専用 API を前提にせず、まず Edge 530 / API 3.3 の BLE 接続役割・ボンディング制約から成立性を確認してください。未検証の接続を実現済みと扱わず、調査・実験結果を Git に残してください。
+> このリポジトリの AGENTS.md、docs/HANDOFF.md、docs/ams-feasibility.md を読んで続けてください。Edge 530 の表示デモはビルドとシミュレーター確認済みです。AMS の直接接続は公開 API の制約調査により見送る判断で、実機接続は未検証です。Apple Music と Spotify の両方という要件を維持し、調査の再開条件と代替候補を確認してください。追加ハードウェアや Spotify 専用方式の採用はまだ決まっていません。変更・検証結果は Git に残してください。

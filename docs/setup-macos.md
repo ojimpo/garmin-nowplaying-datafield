@@ -81,4 +81,4 @@ SDK・署名鍵のパスや鍵そのものを公開リポジトリへ追加し�
 | 日本語が表示されない | シミュレーターの言語が `Japanese (jpn)` か |
 | App Settings Editor が設定 JSON を読めない | Windows でも既知の未解決問題。初期値の自動切替で描画確認はできる |
 
-Mac を用意しただけでは AMS の互換性は確定しない。次の調査は [通信調査メモ](transport-research.md) に従う。
+Mac を用意しても Edge 530 の API 制約は変わらない。[AMS 調査結果](ams-feasibility.md)では直接経路を見送る判断となった。次の方針は [通信調査メモ](transport-research.md) と引き継ぎメモで確認する。

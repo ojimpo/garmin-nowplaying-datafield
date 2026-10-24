@@ -14,6 +14,9 @@
 | 日本語 | Japanese (jpn) 設定で曲名・アーティスト名と、半幅枠での末尾省略を確認 |
 | サンプル固定用の設定 | 固定表示のロジックはテスト済み。SDK の設定エディターでは JSON 読み込みエラーのため UI 操作は未確認 |
 | 実機 | 未確認 |
+| AMS の公開 API・接続役割の調査 | 完了。現行公開 API では直接経路を見送る判断。詳細は [ams-feasibility.md](ams-feasibility.md) |
+| BLE API コンパイルプローブ | 対照の `getServices()` は成功。`requestBond()` / `getBondedDevices()` は `edge530` 非対応を確認。3件とも期待結果に一致 |
+| 公式デバイス API メタデータ | Edge 530 の BLE メソッドと Media scope を監査。[結果と再現手順](../research/ams/README.md) |
 | AMS による Apple Music / Spotify の実再生情報取得 | 未実装・未検証 |
 | macOS でのビルドとテスト | 未実行。手順は setup-macos.md に記載 |
 

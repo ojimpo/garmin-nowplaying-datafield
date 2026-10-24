@@ -1,0 +1,32 @@
+{
+  "sdkVersion": "9.3.0",
+  "target": "edge530",
+  "typecheck": "strict (-l 3)",
+  "scope": "Compilation only. No BLE scan, connection, pairing, or iPhone communication is performed.",
+  "results": [
+    {
+      "probe": "ble-baseline",
+      "sourceStatement": "device.getServices();",
+      "exitCode": 0,
+      "expectedOutcome": "BUILD SUCCESSFUL",
+      "expectationMet": true,
+      "compilerOutput": "BUILD SUCCESSFUL"
+    },
+    {
+      "probe": "request-bond",
+      "sourceStatement": "device.requestBond();",
+      "exitCode": 105,
+      "expectedOutcome": "Unsupported API compilation failure",
+      "expectationMet": true,
+      "compilerOutput": "ERROR: edge530: <repository>\\build\\ams-api-probes\\request-bond\\Probe.mc:20,4: Value '$.Toybox.BluetoothLowEnergy.Device.requestBond' is not supported for device 'edge530'."
+    },
+    {
+      "probe": "bonded-devices",
+      "sourceStatement": "BluetoothLowEnergy.getBondedDevices();",
+      "exitCode": 105,
+      "expectedOutcome": "Unsupported API compilation failure",
+      "expectationMet": true,
+      "compilerOutput": "ERROR: edge530: <repository>\\build\\ams-api-probes\\bonded-devices\\Probe.mc:20,4: Value '$.Toybox.BluetoothLowEnergy.getBondedDevices' is not supported for device 'edge530'."
+    }
+  ]
+}

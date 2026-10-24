@@ -1,0 +1,32 @@
+{
+  "deviceId": "edge530",
+  "definitionVersion": "3d0fb192a2cf01699aefd0f384af3f527e5885bd",
+  "apiVersions": [
+    "3.3.1",
+    "3.3.6"
+  ],
+  "checks": {
+    "getPairedDevices": true,
+    "pairDevice": true,
+    "registerProfile": true,
+    "setScanState": true,
+    "requestBond": false,
+    "isBonded": false,
+    "getBondedDevices": false,
+    "setConnectionStrategy": false
+  },
+  "publicBleModuleFunctions": [
+    "cccdUuid",
+    "getAvailableConnectionCount",
+    "getPairedDevices",
+    "longToUuid",
+    "pairDevice",
+    "registerProfile",
+    "setDelegate",
+    "setScanState",
+    "stringToUuid",
+    "unpairDevice"
+  ],
+  "mediaApiScopePresent": false,
+  "scope": "Static inspection of the official public API debug metadata; not a Bluetooth connection test."
+}
