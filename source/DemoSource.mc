@@ -18,7 +18,11 @@ class DemoSource {
         ];
     }
 
-    function tick(now as Number) as Void {
+    function tick(now as Number, selectedSample as Number) as Void {
+        if (selectedSample >= 1 && selectedSample <= _samples.size()) {
+            _index = selectedSample - 1;
+            return;
+        }
         var elapsed = now - _startedAt;
         if (elapsed < 0) {
             // Recover if the device's millisecond counter wraps.

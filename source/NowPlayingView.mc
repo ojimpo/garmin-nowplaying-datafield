@@ -1,4 +1,5 @@
 import Toybox.Activity;
+import Toybox.Application;
 import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.System;
@@ -14,7 +15,12 @@ class NowPlayingView extends WatchUi.DataField {
     }
 
     function compute(info as Activity.Info) as Void {
-        _source.tick(System.getTimer());
+        var selectedSample = Application.Properties.getValue("demoSample");
+        var sample = 0;
+        if (selectedSample instanceof Number) {
+            sample = selectedSample;
+        }
+        _source.tick(System.getTimer(), sample);
     }
 
     function onUpdate(dc as Graphics.Dc) as Void {

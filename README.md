@@ -10,6 +10,9 @@ Garmin Edge 530 の走行データ画面に、iPhone の Spotify で再生中の
 15秒ごとに、短い曲名・長い曲名・日本語・一時停止・未再生のダミー表示を切り替えます。
 2行に収まらない高さでは1行表示に切り替えます。画面の明暗に合わせて文字色も切り替えます。
 サンプルのアーティスト行には `DEMO` を付けています。
+`Demo sample` でサンプルを固定する設定定義と処理も実装しています（初期値は自動切替）。
+今回の SDK 設定エディターでは設定 JSON の読み込みエラーが出ており、設定画面からの変更は未確認です。
+日本語サンプルは、シミュレーターの言語設定を Japanese にして表示確認しました。
 
 Spotify 取得・iPhone アプリ・Bluetooth 通信はまだ実装していません。
 端末側の権限もまだ要求しません。
@@ -43,7 +46,7 @@ SDK Manager のアクティブ SDK 設定があれば、`CIQ_SDK_HOME` は省略
 SDK の `bin\simulator.exe` を起動してから、次を実行します。
 
 ```powershell
-& "$env:CIQ_SDK_HOME\bin\monkeydo.bat" bin/nowplaying.prg edge530
+& "$env:CIQ_SDK_HOME\bin\monkeydo.bat" (Resolve-Path bin/nowplaying.prg).Path edge530
 ```
 
 Data Fields の表示設定で枠を変え、[確認手順](docs/validation.md)に沿って表示を調べます。
@@ -51,11 +54,12 @@ Monkey C のテストビルド・実行は次のとおりです。
 
 ```powershell
 .\scripts\build.ps1 -TestBuild
-& "$env:CIQ_SDK_HOME\bin\monkeydo.bat" bin/nowplaying-tests.prg edge530 -t
+& "$env:CIQ_SDK_HOME\bin\monkeydo.bat" (Resolve-Path bin/nowplaying-tests.prg).Path edge530 /t
 ```
 
 テストはデモの切替境界と、実際のフォント寸法を使う文字省略を対象にします。
 スクリーン表示や通信の動作確認は別に必要です。
+現在の結果は Edge 530 / API 3.3.1 で3件 PASS。横長246×63pxの2行表示、長い曲名の省略、日本語、白黒背景をシミュレーターで確認済みです。
 
 ## 構成
 

@@ -1,3 +1,10 @@
 <strings>
     <string id="AppName">Now Playing Demo</string>
+    <string id="DemoSampleTitle">Demo sample</string>
+    <string id="DemoCycle">Cycle every 15 seconds</string>
+    <string id="DemoShort">Short title</string>
+    <string id="DemoLong">Long title</string>
+    <string id="DemoJapanese">Japanese title</string>
+    <string id="DemoPaused">Paused</string>
+    <string id="DemoEmpty">Nothing playing</string>
 </strings>

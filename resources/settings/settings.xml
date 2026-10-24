@@ -1,0 +1,12 @@
+<settings>
+    <setting propertyKey="@Properties.demoSample" title="@Strings.DemoSampleTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.DemoCycle</listEntry>
+            <listEntry value="1">@Strings.DemoShort</listEntry>
+            <listEntry value="2">@Strings.DemoLong</listEntry>
+            <listEntry value="3">@Strings.DemoJapanese</listEntry>
+            <listEntry value="4">@Strings.DemoPaused</listEntry>
+            <listEntry value="5">@Strings.DemoEmpty</listEntry>
+        </settingConfig>
+    </setting>
+</settings>

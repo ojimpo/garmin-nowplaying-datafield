@@ -5,15 +5,27 @@ import Toybox.Test;
 function demoTiming(logger as Test.Logger) as Boolean {
     var source = new DemoSource(1000);
     Test.assertEqual(source.title(), "Night Ride");
-    source.tick(15999);
+    source.tick(15999, 0);
     Test.assertEqual(source.title(), "Night Ride");
-    source.tick(16000);
+    source.tick(16000, 0);
     Test.assertEqual(source.title(), "A Very Long Track Title for a Long Evening Ride");
-    source.tick(31000);
+    source.tick(31000, 0);
     Test.assertEqual(source.title(), "夜のサイクリング");
-    source.tick(76000);
+    source.tick(76000, 0);
     Test.assertEqual(source.title(), "Night Ride");
-    source.tick(0);
+    source.tick(0, 0);
+    Test.assertEqual(source.title(), "Night Ride");
+    return true;
+}
+
+(:test)
+function fixedDemoSample(logger as Test.Logger) as Boolean {
+    var source = new DemoSource(1000);
+    source.tick(1000, 3);
+    Test.assertEqual(source.title(), "夜のサイクリング");
+    source.tick(90000, 3);
+    Test.assertEqual(source.title(), "夜のサイクリング");
+    source.tick(1000, 99);
     Test.assertEqual(source.title(), "Night Ride");
     return true;
 }
