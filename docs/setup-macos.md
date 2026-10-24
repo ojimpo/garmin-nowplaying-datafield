@@ -2,7 +2,19 @@
 
 この手順は2026-10-24に作成した。**macOS 上での実行はまだ確認していない**。
 CLI のフラグは公式 SDK 同梱スクリプトと照合した。Windows で確認済みの結果は [validation.md](validation.md) にある。
-AMS の直接経路を調べるためだけに、Mac へ移る必要はない。
+最新方針は iPhone アプリ経由での取得・転送。**今回の続きには Xcode と iPhone 実機を用意する**。
+最初に [引き継ぎ](HANDOFF.md) と [iPhone 検証計画](ios-companion-plan.md) を読む。
+
+## iPhone 側の準備と最初の作業
+
+1. Mac の OS と接続する iPhone に対応した Xcode を導入し、初回起動を完了する。Apple Account・署名・端末の Developer Mode など必要な設定は本人が行う。
+2. このリポジトリを clone する（下の準備手順を参照）。`xcodebuild -version` と `xcrun --find swift` で、使う Xcode のバージョンとツールを確認する。
+3. `ios/` に最小の Swift / SwiftUI アプリを作成し、個別の Bundle ID とローカル署名設定で iPhone 実機へインストールする。**現時点で iOS プロジェクトは未作成**なので、開くべき `.xcodeproj` はまだない。
+4. 最初は追加 SDK なしで Apple Music の現在曲を前面で読み取る小さな実験を行う。次に Spotify SDK による前面取得、Garmin Mobile SDK による合成データ転送を試す。詳細と合格条件は [実験計画](ios-companion-plan.md#実験の順序と合格条件) に従う。
+5. Edge 530 向けのビルド・転送を行う前に、以下の Connect IQ 環境を整える。Mac / iPhone / Edge の各実行結果を記録する。
+
+iPhone・Spotify・Garmin Connect の認可画面は本人が操作する。Apple / Spotify のトークン、署名情報、Xcode の個人設定を Git に追加しない。
+iOS Simulator 上での画面確認を、実機の音楽・Bluetooth・バックグラウンド検証の代わりにはしない。
 
 ## 準備
 
@@ -81,4 +93,5 @@ SDK・署名鍵のパスや鍵そのものを公開リポジトリへ追加し�
 | 日本語が表示されない | シミュレーターの言語が `Japanese (jpn)` か |
 | App Settings Editor が設定 JSON を読めない | Windows でも既知の未解決問題。初期値の自動切替で描画確認はできる |
 
-Mac を用意しても Edge 530 の API 制約は変わらない。[AMS 調査結果](ams-feasibility.md)では直接経路を見送る判断となった。次の方針は [通信調査メモ](transport-research.md) と引き継ぎメモで確認する。
+Mac を用意しても Edge 530 の API 制約は変わらない。[AMS 調査結果](ams-feasibility.md)では直接経路を見送る判断となった。
+現在は [iPhone アプリ方式](ios-companion-plan.md)へ進む。前面での取得・転送を確認した後、両サービスのロック中の追従を最優先で試す。

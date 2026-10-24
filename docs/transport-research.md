@@ -1,19 +1,21 @@
 # 通信経路の検証メモ
 
-確認日: 2026-10-24。AMS の公開 API・デバイス定義・コンパイル調査を実施し、**直接経路は実装を見送る**判断。
-詳しい根拠・保存した結果・再開条件は [AMS 調査結果](ams-feasibility.md) を参照。Spotify 専用の取得方式は既定にしない。
+確認日: 2026-10-24。**最新のユーザー決定は iPhone アプリ経由で進めること**。続きは Mac で行う。
+取得・転送・ロック中動作の調査結果と次の実験は [iPhone アプリの検証計画](ios-companion-plan.md) を参照。
+AMS の直接経路は見送る判断のまま。[根拠・保存した結果・再開条件](ams-feasibility.md)を残す。
 現在の表示デモには通信を組み込んでいない。
 
 ## 目的
 
-Apple Music と Spotify の両方について、iPhone 標準の再生情報を Edge 530 の Data Field に表示する。
+Apple Music と Spotify の両方について、再生中情報を Edge 530 の Data Field に表示する。
 利用時は iPhone をロックでき、独自アプリを前面に出し続けなくてよい構成を目指す。
-AMS を使えるなら、Spotify 個別の API 認証や再生状態のポーリングを省ける可能性がある。ただし対象機種との接続成立は未検証。
+独自 iPhone アプリの導入・初回接続を許容する。取得は Apple Music / Spotify 別の API で行い、Garmin iOS Mobile SDK で送る構成を最初に検証する。
+ロック中の継続取得・転送を保証できる資料や実機結果はまだない。
 
 ## AMS について確認できたこと
 
 [Apple の AMS 仕様](https://developer.apple.com/library/archive/documentation/CoreBluetooth/Reference/AppleMediaService_Reference/Specification/Specification.html)は、外部 Bluetooth 機器へ再生状態と曲情報を通知する仕組みを定めている。
-アプリ横断の現在の再生情報を扱う経路として検証する。
+アプリ横断の現在の再生情報を扱う候補として調べたが、Edge 530 からの直接接続は以下の制約により見送った。
 
 - Service UUID: `89D3502B-0F36-433A-8EF4-C502AD55F8DC`
 - Entity Update: `2F7CABCE-808D-411F-9A0C-BB92BA96C102`。曲情報の通知を購読し、必要な属性を登録する。
@@ -42,16 +44,16 @@ Apple Music / Spotify のロック中動作や、アプリ切替時の追従は�
 
 1. 公式 API・定義・サンプルの照合と機種指定コンパイルは完了。[research/ams](../research/ams/README.md) で再現できる。
 2. [再開条件](ams-feasibility.md#実施していないことと再開条件)を満たす新しい証拠がなければ、直接経路の仮実装は追加しない。本体の機能と CIQ の機能は区別する。
-3. 次は追加ハードウェアのブリッジ等も含めて両サービスを扱う代替案を検討し、ユーザーと方針を決める。まだ追加機器の導入は決まっていない。
-4. 通信経路ができた場合のみ、実機で検出・接続・サービス発見・通知登録、さらに Apple Music / Spotify、ロック中・アプリ切替・一時停止・切断復帰を確認する。
+3. iPhone アプリ方式はユーザーが採用済み。[Mac での実験順序](ios-companion-plan.md#実験の順序と合格条件)に従い、サービス別取得と合成データの転送を分けて検証する。追加ハードウェアは導入しない。
+4. 前面で両者が成立したら組み合わせ、ロック中・アプリ切替・一時停止・自然な曲変更・切断復帰を実機で確認する。
 
-AMS を直接使う Garmin 側の開発に Mac は必須ではない。Mac / Xcode が必要なのは、独自 iPhone アプリを作る場合。
+Garmin 側だけなら Mac は必須ではないが、現在採用した独自 iPhone アプリには Mac / Xcode が必要。
 Mac を使うこと自体で Edge 530 の API 制約が変わるわけではない。
 
-## 旧コンパニオン案で確認していたこと（主経路としては保留）
+## コンパニオンの転送で確認した制約（現在の最初の検証候補）
 
-以下は独自 iPhone アプリから Mobile SDK で送る案の調査。
-AMS の直接経路が成立しない場合の参考として残す。Spotify 専用アプリへの移行を決定したものではない。
+以下は独自 iPhone アプリから Mobile SDK で送る案の資料調査。
+転送候補として採用したが、まだ実装・実機確認はしていない。Spotify 専用アプリへ変更したわけではない。
 
 - Edge 530 は API 3.3 対応。画面全体は 246×322px だが、Data Field へ渡される枠の寸法は別。
 - Communications モジュールの公式資料には、foreground Data Field 対応は API 5.0.0 からと記載されている。Edge 530 の画面側で直接呼ぶ設計にはしない。

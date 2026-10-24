@@ -18,11 +18,15 @@
 | BLE API コンパイルプローブ | 対照の `getServices()` は成功。`requestBond()` / `getBondedDevices()` は `edge530` 非対応を確認。3件とも期待結果に一致 |
 | 公式デバイス API メタデータ | Edge 530 の BLE メソッドと Media scope を監査。[結果と再現手順](../research/ams/README.md) |
 | AMS による Apple Music / Spotify の実再生情報取得 | 未実装・未検証 |
+| iPhone アプリ方式の資料調査と次の手順 | [検証計画](ios-companion-plan.md)に記録。ユーザー採用済み。iOS プロジェクト作成・前面取得・Garmin 転送・ロック中の継続はいずれも未実施 |
 | macOS でのビルドとテスト | 未実行。手順は setup-macos.md に記載 |
 
 デバイス指定なしのビルドには `Invalid device id ... edge530` の警告が出る。
 これは構文・型の確認に限られ、Edge 530 向けの互換性・メモリ・フォント・実行を検証した結果ではない。
 `bin/generic*.prg` は端末へ配布しない。
+
+今回の iPhone 方式への方針更新はドキュメントのみ。iOS / macOS / 実 BLE の新しい動作確認結果はない。
+Mac で実験後は [記録欄](ios-companion-plan.md#次回記録する欄)に環境・取得・転送・ロック中の結果を追記し、この表も更新する。
 
 ## 確認できた枠の寸法
 

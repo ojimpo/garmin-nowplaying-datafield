@@ -2,18 +2,19 @@
 
 Garmin Edge 530 の走行データ画面に、iPhone で再生中の曲名・アーティスト名を表示するためのプロジェクト。Spotify と Apple Music の両方を対象にする。
 
-**表示デモは動作確認済み。AMS の直接接続は公開 API の制約により実装を見送っています。実際の再生情報はまだ取得できません。**
+**表示デモは動作確認済み。次は iPhone アプリ経由で取得・転送する方式を Mac で検証します。実際の再生情報はまだ取得できません。**
 
 ## 続きから開発する場合
 
-最初に [引き継ぎメモ](docs/HANDOFF.md) と [AMS の調査結果](docs/ams-feasibility.md) を読むこと。
-2026-10-24 に公式 API・AMS 実装例・Edge 530 のデバイス定義・機種指定コンパイルを照合した。
-必要な接続役割とボンディングを公開 API で実装する経路が見つからず、直接経路は見送る判断。
-実機の接続失敗を観測した結果ではない。Spotify と Apple Music の両方という要件は維持する。
+最初に [引き継ぎメモ](docs/HANDOFF.md) と [iPhone アプリの調査・検証計画](docs/ios-companion-plan.md) を読むこと。
+最新のユーザー決定は **iPhone アプリ経由で進め、続きは Mac で行う**こと。
+Apple Music と Spotify から別々の API で情報を取得し、Garmin iOS Mobile SDK で転送する構成を最初に試す。
+iOS アプリはまだ未作成。前面での取得・転送と、ロック中の継続動作を分けて実機検証する。
 
-Garmin 側の開発は Windows・macOS・Linux で行える。**続きのために Mac へ移る必要はない**。
-macOS / Xcode が必要なのは、独自 iPhone アプリをビルドする場合。
+Garmin 側の開発は Windows・macOS・Linux で行える。今回採用した iPhone アプリのビルド・実機署名には **macOS / Xcode が必要**。
 Mac で再開する場合は [macOS セットアップ](docs/setup-macos.md) を参照。
+
+Edge 530 から AMS への直接接続は [公開 API の調査](docs/ams-feasibility.md)により見送った。この判断は iPhone アプリ経由まで否定するものではない。
 
 ## 現在できること
 
@@ -83,6 +84,7 @@ Monkey C のテストビルド・実行は次のとおりです。
 | `source/TextFit.mc` | フォント幅を測って末尾を省略 |
 | `tests/` | Monkey C のテスト |
 | `docs/transport-research.md` | 通信制約と次の検証 |
+| `docs/ios-companion-plan.md` | iPhone 方式の調査結果・Mac で試す順序・合格条件 |
 | `docs/ams-feasibility.md` | AMS 直接接続の判断・根拠・再開条件 |
 | `research/ams/` | API 監査・コンパイルプローブ・保存した結果 |
 | `docs/validation.md` | 実行済みチェックと実機確認の手順 |
@@ -101,8 +103,8 @@ Monkey C のテストビルド・実行は次のとおりです。
 1. ダミー曲の2行表示と Edge 530 向けビルド。
 2. シミュレーターと実機でデータ画面の分割・寸法・日本語表示を確認。
 3. AMS 直接接続の制約調査は完了。現行公開 API では実装を見送る。再開には具体的な対応経路の根拠が必要。
-4. 次は両サービスを扱える代替構成の選択。小型 BLE ブリッジは候補だが、まだ採用・動作確認していない。追加ハードウェアの導入や Spotify 専用 API への変更は、ユーザーと相談して決める。
-5. 通信経路が成立したら、Apple Music と Spotify の両方で、iPhone ロック中の曲変更通知・切断復帰を実機で評価する。
+4. iPhone アプリ方式を採用。Mac で Apple Music / Spotify の前面取得と、合成データの Garmin 転送を別々に確認してから組み合わせる。
+5. 両サービスで iPhone ロック中の自然な曲変更・切断復帰を実機評価する。前面で動くだけで完成と扱わない。追加機器は採用していない。
 
 ## 設計元
 
